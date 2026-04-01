@@ -1,0 +1,248 @@
+<style>
+        /* CSS Variables for easy color management */
+        :root {
+            --sidebar-width: 240px;
+            --primary-color: #4e73df;
+            --bg-color: #f8f9fc;
+            --text-dark: #3a3b45;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+            color: white;
+            position: fixed;
+            padding: 20px 0;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            padding: 15px 25px;
+            transition: 0.3s;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu li:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #fff;
+        }
+
+        .sidebar-menu li.active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* Stat Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .card h4 {
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .card .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Data Table */
+        .table-container {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e3e6f0;
+        }
+
+        table th {
+            background-color: #f8f9fc;
+            color: #858796;
+        }
+
+        .status-pill {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            background: #e1f5fe;
+            color: #0288d1;
+        }
+
+        /* Responsive Fixes */
+@media (max-width: 768px) {
+    :root {
+        --sidebar-width: 70px; /* Narrower width for tablets/phones */
+    }
+
+    .sidebar h2 {
+        display: none; /* Hide the title */
+    }
+
+    .sidebar-menu li {
+        text-align: center;
+        padding: 20px 0;
+        font-size: 0.7rem; /* Smaller text or hide it */
+    }
+
+    /* Option: Hide text entirely and just show icons if you had them */
+    .sidebar-menu li span {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+        padding: 15px; /* Less padding on mobile */
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr; /* Stack cards vertically on small screens */
+    }
+}
+
+/* Extra Small Screens (Phones) */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.2rem;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto; /* Adds horizontal scroll to table so it doesn't break layout */
+    }
+}
+    </style>
+    <div class="sidebar">
+        <h2>ADMIN PANEL</h2>
+        <ul class="sidebar-menu">
+            <li class="active">Dashboard</li>
+            <li><%= link_to "Profile", edit_user_registration_path %></li>
+            <li>Analytics</li>
+            <li>Settings</li>
+            <li><%= button_to "Logout", destroy_user_session_path, method: :delete %></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Overview</h1>
+            <button style="padding: 8px 15px; background: #4e73df; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Generate Report
+            </button>
+        </div>
+
+        <div class="stats-container">
+            <div class="card">
+                <h4>Earnings (Monthly)</h4>
+                <div class="value">$40,000</div>
+            </div>
+            <div class="card" style="border-left-color: #1cc88a;">
+                <h4>Users (Total)</h4>
+                <div class="value">1,250</div>
+            </div>
+            <div class="card" style="border-left-color: #f6c23e;">
+                <h4>Pending Tasks</h4>
+                <div class="value">18</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <h3>Recent User Activity</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td><span class="status-pill">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>Garrett Winters</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td><span class="status-pill">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>Ashton Cox</td>
+                        <td>Junior Technical Author</td>
+                        <td>San Francisco</td>
+                        <td><span class="status-pill" style="background:#fff3e0; color:#ef6c00;">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

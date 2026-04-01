@@ -1,0 +1,165 @@
+<style>
+        :root {
+            --primary: #6366f1;
+            --bg-light: #f3f4f6;
+            --sidebar-width: 260px;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            display: flex;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--white);
+            border-right: 1px solid #ddd;
+            position: fixed;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* When sidebar is hidden on mobile */
+        .sidebar.active {
+            left: 0 !important;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 20px;
+        }
+
+        .nav-links li {
+            padding: 12px 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #444;
+            display: block;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        header {
+            background: var(--white);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* --- The Toggle Button --- */
+        .toggle-btn {
+            display: none; /* Hidden on Desktop */
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        /* --- Responsive Logic --- */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -260px; /* Hide sidebar off-screen */
+            }
+
+            .main-content {
+                margin-left: 0; /* Content takes full width */
+            }
+
+            .toggle-btn {
+                display: block; /* Show button on mobile */
+            }
+
+            /* Overlay effect when menu is open */
+            .overlay.active {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+            }
+        }
+
+        .overlay { display: none; }
+
+        .card {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+    </style>
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span>MY APP</span>
+            <span style="cursor:pointer; display:none;" id="close-sidebar" class="toggle-btn">×</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">🏠 Dashboard</a></li>
+            <li>👤 <%= link_to "Profile", edit_user_registration_path %></a></li>
+            <li><a href="#">⚙️ Settings</a></li>
+            <li>🚪 <%= button_to "Logout", destroy_user_session_path, method: :delete %></a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <header>
+            <button class="toggle-btn" id="menu-toggle">☰ Menu</button>
+            <h2>User Dashboard</h2>
+        </header>
+
+        <div class="card">
+            <h3>Welcome back, User!</h3>
+            <p>Your sidebar is now responsive. On mobile, click the "Menu" button to toggle the sidebar.</p>
+        </div>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const menuBtn = document.getElementById('menu-toggle');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu); // Clicking outside closes it
+    </script>
